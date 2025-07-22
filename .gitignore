@@ -73,3 +73,14 @@ Plugins/**/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Xcode / macOS project files
+*.xcodeproj
+*.xcworkspace
+*.makefile
+Makefile
+CMakeLists.txt
+
+# OS / Editor junk
+.DS_Store
+Thumbs.db
