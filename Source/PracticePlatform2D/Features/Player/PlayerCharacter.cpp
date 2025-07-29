@@ -50,49 +50,47 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	}
 }
 
+void APlayerCharacter::Landed(const FHitResult& Hit) {
+	Super::Landed(Hit);
+	GetSprite()->SetLooping(true);
+	GetSprite()->SetFlipbook(PfIdle);
+	GetSprite()->Play();
+	StopJumping();
+}
+
 void APlayerCharacter::OnMoveInput(const FInputActionValue& Value) {
-	if (bPressedJump) {
+	if (GetCharacterMovement()->IsFalling()) {
 		return;
 	}
 	float value = Value.Get<float>();
 	FVector vector = GetActorForwardVector();
 	AddMovementInput(vector, value);
-	GetSprite()->SetFlipbook(PfRun);
+
+	if (GetSprite()->GetFlipbook() != PfJump) {
+		GetSprite()->SetFlipbook(PfRun);
+		GetSprite()->SetLooping(true);
+	}
 
 	if (value >= 0.0f) {
 		GetSprite()->SetWorldRotation(FRotator(0.0f, 0.0f, 0.0f));
 	}
 	else {
-		GetSprite()->SetWorldRotation(FRotator(0.0f, 0.0f, -180.0f));
+		GetSprite()->SetWorldRotation(FRotator(0.0f, -180.0f, 0.0f));
 	}
 }
 
 void APlayerCharacter::OnMoveCompleted(const FInputActionValue& Value) {
-	if (bPressedJump) {
+	if (GetCharacterMovement()->IsFalling()) {
 		return;
 	}
 	GetSprite()->SetFlipbook(PfIdle);
 }
 
 void APlayerCharacter::OnJumpInput(const FInputActionValue& Value) {
-	if (bPressedJump) {
+	if (GetCharacterMovement()->IsFalling()) {
 		return;
 	}
-	Jump();
 	GetSprite()->SetLooping(false);
 	GetSprite()->SetFlipbook(PfJump);
-
-	GetWorld()->GetTimerManager().SetTimer(DelayTimerHandle, this, &APlayerCharacter::OnDelayComplete, 0.1f, false);
-}
-
-void APlayerCharacter::OnDelayComplete() {
-	if (GetVelocity().Z == 0) {
-		GetSprite()->SetLooping(false);
-		GetSprite()->Play();
-		GetSprite()->SetFlipbook(PfIdle);
-		StopJumping();
-	}
-	else {
-		GetWorld()->GetTimerManager().SetTimer(DelayTimerHandle, this, &APlayerCharacter::OnDelayComplete, 0.1f, false);
-	}
+	Jump();
 }

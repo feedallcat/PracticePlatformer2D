@@ -25,6 +25,8 @@ protected:
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
+	virtual void Landed(const FHitResult& Hit) override;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Input")
 	UInputMappingContext* ImcDefault;
 
@@ -48,8 +50,4 @@ protected:
 	void OnMoveCompleted(const FInputActionValue& Value);
 
 	void OnJumpInput(const FInputActionValue& Value);
-
-	FTimerHandle DelayTimerHandle;
-
-	void OnDelayComplete();
 };
