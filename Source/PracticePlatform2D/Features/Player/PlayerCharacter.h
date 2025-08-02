@@ -21,16 +21,16 @@ public:
 	APlayerCharacter();
 
 protected:
-	virtual void BeginPlay() override;
+	void BeginPlay() override;
 
-	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+	void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
-	virtual void Landed(const FHitResult& Hit) override;
+	void Landed(const FHitResult& Hit) override;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Input")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	UInputMappingContext* ImcDefault;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Input")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	UInputAction* IaMove;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
